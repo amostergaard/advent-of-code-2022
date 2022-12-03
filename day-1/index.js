@@ -17,4 +17,12 @@ const totals = groups.map((group) =>
 
 const maxValue = Math.max(...totals);
 
-console.log("MAX VALUE:", maxValue);
+const sortedTotals = totals.slice();
+sortedTotals.sort((a, b) => b - a);
+
+console.log("SORTED TOTALS:", JSON.stringify(sortedTotals, undefined, 2));
+
+const [first, second, third] = sortedTotals;
+
+console.log("Part 1 (max value):", maxValue);
+console.log("Part 2 (top three sum): ", first + second + third);
