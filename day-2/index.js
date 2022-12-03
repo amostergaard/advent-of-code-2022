@@ -4,65 +4,102 @@ const buffer = fs.readFileSync("./data/input.txt");
 
 const stringData = buffer.toString("utf-8");
 
-const matches = stringData
+const opponentInputMap = {
+  A: "rock",
+  B: "paper",
+  C: "scissors",
+};
+
+const directMatchPlayerInputMap = {
+  X: "rock",
+  Y: "paper",
+  Z: "scissors",
+};
+
+const complementaryMatchPlayerInputMap = {
+  A: {
+    X: "scissors",
+    Y: "rock",
+    Z: "paper",
+  },
+  B: {
+    X: "rock",
+    Y: "paper",
+    Z: "scissors",
+  },
+  C: {
+    X: "paper",
+    Y: "scissors",
+    Z: "rock",
+  },
+};
+
+const shapeScoreModifiers = {
+  rock: 1,
+  paper: 2,
+  scissors: 3,
+};
+
+// Keys are matchScoreModifiers[player][opponent]
+const matchScoreModifiers = {
+  rock: {
+    rock: 3,
+    paper: 0,
+    scissors: 6,
+  },
+  paper: {
+    rock: 6,
+    paper: 3,
+    scissors: 0,
+  },
+  scissors: {
+    rock: 0,
+    paper: 6,
+    scissors: 3,
+  },
+};
+
+const encodedMatches = stringData
   .trim()
   .split("\n")
-  .map((match) => match.split(" "));
+  .map((datum) => datum.trim().split(" "));
 
-const scores = matches.map(([opponent, player]) => {
-  let score = 0;
-  let modifier = 0;
+const directMatches = encodedMatches.map(([opponent, player]) => {
+  const opponentPlay = opponentInputMap[opponent];
+  const playerPlay = directMatchPlayerInputMap[player];
 
-  if (player === "X") {
-    if (opponent === "A") {
-      modifier = 3;
-    }
+  return [opponentPlay, playerPlay];
+});
 
-    if (opponent === "B") {
-      modifier = 0;
-    }
-
-    if (opponent === "C") {
-      modifier = 6;
-    }
-
-    score = 1;
-  }
-
-  if (player === "Y") {
-    if (opponent === "A") {
-      modifier = 6;
-    }
-
-    if (opponent === "B") {
-      modifier = 3;
-    }
-
-    if (opponent === "C") {
-      modifier = 0;
-    }
-    score = 2;
-  }
-
-  if (player === "Z") {
-    if (opponent === "A") {
-      modifier = 0;
-    }
-
-    if (opponent === "B") {
-      modifier = 6;
-    }
-
-    if (opponent === "C") {
-      modifier = 3;
-    }
-
-    score = 3;
-  }
+const directMatchScores = directMatches.map(([opponent, player]) => {
+  const score = shapeScoreModifiers[player];
+  const modifier = matchScoreModifiers[player][opponent];
 
   return score + modifier;
 });
 
-const total = scores.reduce((curr, val) => curr + val, 0);
+const directMatchTotal = directMatchScores.reduce((curr, val) => curr + val, 0);
 
-console.log("Total:", total);
+const complementaryMatches = encodedMatches.map(([opponent, player]) => {
+  const opponentPlay = opponentInputMap[opponent];
+  const playerPlay = complementaryMatchPlayerInputMap[opponent][player];
+
+  return [opponentPlay, playerPlay];
+});
+
+const complementaryMatchScores = complementaryMatches.map(
+  ([opponent, player]) => {
+    const score = shapeScoreModifiers[player];
+    const modifier = matchScoreModifiers[player][opponent];
+
+    return score + modifier;
+  }
+);
+
+const complementaryMatchTotal = complementaryMatchScores.reduce(
+  (curr, val) => curr + val,
+  0
+);
+
+console.log("Part 1 (direct match score):", directMatchTotal);
+console.log("Part 2 (complementary match score):", complementaryMatchTotal);
