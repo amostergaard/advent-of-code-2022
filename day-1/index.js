@@ -4,8 +4,17 @@ const buffer = fs.readFileSync("./data/input.txt");
 
 const stringData = buffer.toString("utf-8");
 
-const lines = stringData.split("\n");
+const groups = stringData.split("\n\n").map((group) => {
+  return group
+    .trim()
+    .split("\n")
+    .map((value) => parseInt(value, 10));
+});
 
-for (let i = 0; i < lines.length; i++) {
-  console.log(`${i + 1}: ${lines[i]}`);
-}
+const totals = groups.map((group) =>
+  group.reduce((curr, value) => curr + value, 0)
+);
+
+const maxValue = Math.max(...totals);
+
+console.log("MAX VALUE:", maxValue);
