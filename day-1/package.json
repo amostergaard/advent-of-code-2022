@@ -2,13 +2,16 @@
   "name": "@monorepo/day-1",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "start": "ts-node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@monorepo/shared": "workspace:*"
+  },
   "devDependencies": {
     "@types/node": "^18.11.10",
     "ts-node": "^10.9.1",

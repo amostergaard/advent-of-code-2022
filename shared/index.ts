@@ -1,1 +1,1 @@
-export {};
+export { getFileContentAsString } from "./getFileContentAsString";

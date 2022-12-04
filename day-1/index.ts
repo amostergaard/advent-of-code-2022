@@ -1,4 +1,4 @@
-import { getFileContentAsString } from "./getFileContentAsString";
+import { getFileContentAsString } from "@monorepo/shared";
 
 const stringData = getFileContentAsString("./data/input.txt");
 
