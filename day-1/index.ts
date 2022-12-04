@@ -1,6 +1,6 @@
-const fs = require("fs");
+import { readFileSync } from "fs";
 
-const buffer = fs.readFileSync("./data/input.txt");
+const buffer = readFileSync("./data/input.txt");
 
 const stringData = buffer.toString("utf-8");
 
@@ -19,8 +19,6 @@ const maxValue = Math.max(...totals);
 
 const sortedTotals = totals.slice();
 sortedTotals.sort((a, b) => b - a);
-
-console.log("SORTED TOTALS:", JSON.stringify(sortedTotals, undefined, 2));
 
 const [first, second, third] = sortedTotals;
 
