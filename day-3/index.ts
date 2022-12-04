@@ -1,6 +1,6 @@
-const fs = require("fs");
+import { readFileSync } from "fs";
 
-const buffer = fs.readFileSync("./data/input.txt");
+const buffer = readFileSync("./data/input.txt");
 
 const stringData = buffer.toString("utf-8");
 
@@ -13,7 +13,7 @@ const compartments = rucksacks.map((rucksack) => {
   return [compartmentA, compartmentB];
 });
 
-function getIntersection(arr1, arr2) {
+function getIntersection<T>(arr1: T[], arr2: T[]) {
   const set1 = new Set(arr1);
   const set2 = new Set(arr2);
 
@@ -31,11 +31,11 @@ const duplicates = compartments.map(([compartmentA, compartmentB]) => {
   return intersection[0];
 });
 
-function isLowerCase(letter) {
+function isLowerCase(letter: string): boolean {
   return letter === letter.toLowerCase();
 }
 
-function prioritizeItem(item) {
+function prioritizeItem(item: string): number {
   const letterScore = item.toLowerCase().charCodeAt(0) - 96;
   return isLowerCase(item) ? letterScore : letterScore + 26;
 }
@@ -49,7 +49,7 @@ const duplicatePriorityTotal = duplicatePriorities.reduce(
 
 console.log("Part 1 (duplicates priority total):", duplicatePriorityTotal);
 
-function chunk(arr, chunkSize) {
+function chunk<T>(arr: T[], chunkSize: number) {
   const result = [];
   for (let i = 0; i < arr.length; i += chunkSize) {
     const chunk = arr.slice(i, i + chunkSize);
@@ -59,10 +59,11 @@ function chunk(arr, chunkSize) {
 }
 
 const groups = chunk(rucksacks, 3);
-const badges = groups.map(([rucksackA, rucksackB, rucksackC]) => {
+const badges = groups.map((group) => {
+  const [rucksackA, rucksackB, rucksackC] = group;
   const intersection = getIntersection(
-    rucksackA,
-    getIntersection(rucksackB, rucksackC)
+    rucksackA.split(""),
+    getIntersection(rucksackB.split(""), rucksackC.split(""))
   );
   return intersection[0];
 });
