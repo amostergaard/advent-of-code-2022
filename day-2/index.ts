@@ -1,22 +1,40 @@
-const fs = require("fs");
+import { readFileSync } from "fs";
 
-const buffer = fs.readFileSync("./data/input.txt");
+type OpponentInput = string;
+type PlayerInput = string;
+type Move = "rock" | "paper" | "scissors";
+
+interface OpponentInputMap {
+  [key: OpponentInput]: Move;
+}
+
+interface DirectPlayerInputMap {
+  [key: PlayerInput]: Move;
+}
+
+interface ComplementaryPlayerInputMap {
+  [key: OpponentInput]: {
+    [key: PlayerInput]: Move;
+  };
+}
+
+const buffer = readFileSync("./data/input.txt");
 
 const stringData = buffer.toString("utf-8");
 
-const opponentInputMap = {
+const opponentInputMap: OpponentInputMap = {
   A: "rock",
   B: "paper",
   C: "scissors",
 };
 
-const directMatchPlayerInputMap = {
+const directMatchPlayerInputMap: DirectPlayerInputMap = {
   X: "rock",
   Y: "paper",
   Z: "scissors",
 };
 
-const complementaryMatchPlayerInputMap = {
+const complementaryMatchPlayerInputMap: ComplementaryPlayerInputMap = {
   A: {
     X: "scissors",
     Y: "rock",
