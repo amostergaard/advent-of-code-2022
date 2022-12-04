@@ -1,8 +1,6 @@
-import { readFileSync } from "fs";
+import { getFileContentAsString } from "./getFileContentAsString";
 
-const buffer = readFileSync("./data/input.txt");
-
-const stringData = buffer.toString("utf-8");
+const stringData = getFileContentAsString("./data/input.txt");
 
 const groups = stringData.split("\n\n").map((group) => {
   return group
