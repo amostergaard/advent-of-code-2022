@@ -1,8 +1,12 @@
-import { readFileSync } from "fs";
+import {
+  chunk,
+  getFileContentAsString,
+  getIntersection,
+  isLowerCase,
+  sum,
+} from "@monorepo/shared";
 
-const buffer = readFileSync("./data/input.txt");
-
-const stringData = buffer.toString("utf-8");
+const stringData = getFileContentAsString("./data/input.txt");
 
 const rucksacks = stringData.trim().split("\n");
 
@@ -13,27 +17,12 @@ const compartments = rucksacks.map((rucksack) => {
   return [compartmentA, compartmentB];
 });
 
-function getIntersection<T>(arr1: T[], arr2: T[]) {
-  const set1 = new Set(arr1);
-  const set2 = new Set(arr2);
-
-  const intersection = new Set(
-    [...set1].filter((element) => set2.has(element))
-  );
-
-  return [...intersection];
-}
-
 const duplicates = compartments.map(([compartmentA, compartmentB]) => {
   const intersection = getIntersection(compartmentA, compartmentB);
 
   // Assume all duplicates are same
   return intersection[0];
 });
-
-function isLowerCase(letter: string): boolean {
-  return letter === letter.toLowerCase();
-}
 
 function prioritizeItem(item: string): number {
   const letterScore = item.toLowerCase().charCodeAt(0) - 96;
@@ -42,21 +31,7 @@ function prioritizeItem(item: string): number {
 
 const duplicatePriorities = duplicates.map(prioritizeItem);
 
-const duplicatePriorityTotal = duplicatePriorities.reduce(
-  (curr, val) => curr + val,
-  0
-);
-
-console.log("Part 1 (duplicates priority total):", duplicatePriorityTotal);
-
-function chunk<T>(arr: T[], chunkSize: number) {
-  const result = [];
-  for (let i = 0; i < arr.length; i += chunkSize) {
-    const chunk = arr.slice(i, i + chunkSize);
-    result.push(chunk);
-  }
-  return result;
-}
+console.log("Part 1 (duplicates priority total):", sum(...duplicatePriorities));
 
 const groups = chunk(rucksacks, 3);
 const badges = groups.map((group) => {
@@ -70,6 +45,4 @@ const badges = groups.map((group) => {
 
 const badgePriorities = badges.map(prioritizeItem);
 
-const badgePriorityTotal = badgePriorities.reduce((curr, val) => curr + val, 0);
-
-console.log("Part 2 (badge priority total):", badgePriorityTotal);
+console.log("Part 2 (badge priority total):", sum(...badgePriorities));

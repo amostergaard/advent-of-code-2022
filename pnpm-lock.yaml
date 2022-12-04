@@ -40,9 +40,12 @@ importers:
 
   day-3:
     specifiers:
+      '@monorepo/shared': workspace:*
       '@types/node': ^18.11.10
       ts-node: ^10.9.1
       typescript: ^4.9.3
+    dependencies:
+      '@monorepo/shared': link:../shared
     devDependencies:
       '@types/node': 18.11.10
       ts-node: 10.9.1_eoe7put6ewfbqpy6gs36tihw6y
